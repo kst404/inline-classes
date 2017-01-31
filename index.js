@@ -67,7 +67,7 @@ function appendRule(styleHash, styles) {
   }
 
   if(classes.indexOf(styleHash) === -1) {
-    const parsedStyles = parseStyles(styles, styleHash)
+    const parsedStyles = parseStyles(styles, '.' + styleHash)
 
     for (var selector in parsedStyles) {
       if (parsedStyles.hasOwnProperty(selector)) {
@@ -81,7 +81,7 @@ function appendRule(styleHash, styles) {
 
 module.exports.css = function css(styles, ...values) {
   const interpolatedStyles = String.raw(styles, ...values.map(val => val === false || val === undefined ? '' : val))
-  const styleHash = '._' + XXH.h32(interpolatedStyles.replace(/\s+/g, ' '), 0x0000 ).toString(16)
+  const styleHash = '_' + XXH.h32(interpolatedStyles.replace(/\s+/g, ' '), 0x0000 ).toString(16)
 
   const modifiedStyles = interpolatedStyles
 
