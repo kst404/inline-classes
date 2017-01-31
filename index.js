@@ -1,9 +1,9 @@
-import XXH from 'xxhashjs'
+const XXH = require('xxhashjs')
 
 const classes = []
 let styleSheet, rulesInserted = 0
 
-export function parseStyles(styles, rootSelector) {
+function parseStyles(styles, rootSelector) {
   let curpos = 0, currentSelector = [rootSelector], currentProps = '', result = {}
   const chunks = styles.split(/[;}{]/)
 
@@ -39,7 +39,7 @@ export function parseStyles(styles, rootSelector) {
       currentProps += chunk + ';'
     }
     else {
-      // console.log('unrecognized', chunk, ', suffix', suffix)
+      // TODO
     }
 
     curpos += chunk.length + 1
@@ -48,8 +48,6 @@ export function parseStyles(styles, rootSelector) {
   if(currentProps !== '') {
     flushSelector()
   }
-
-  // console.log(styles, result)
 
   return result
 }
@@ -81,7 +79,7 @@ function appendRule(styleHash, styles) {
   }
 }
 
-export default function css(styles, ...values) {
+exports.css = function css(styles, ...values) {
   const interpolatedStyles = String.raw(styles, ...values.map(val => val === false || val === undefined ? '' : val))
   const styleHash = '._' + XXH.h32(interpolatedStyles.replace(/\s+/g, ' '), 0x0000 ).toString(16)
 
