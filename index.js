@@ -79,7 +79,7 @@ function appendRule(styleHash, styles) {
   }
 }
 
-exports.css = function css(styles, ...values) {
+module.exports.css = function css(styles, ...values) {
   const interpolatedStyles = String.raw(styles, ...values.map(val => val === false || val === undefined ? '' : val))
   const styleHash = '._' + XXH.h32(interpolatedStyles.replace(/\s+/g, ' '), 0x0000 ).toString(16)
 
