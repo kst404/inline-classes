@@ -1,0 +1,12 @@
+{
+  "name": "inline-classes",
+  "version": "0.1.0",
+  "description": "Yet another CSS-in-JS solution",
+  "main": "index.js",
+  "repository": "https://github.com/kst404/inline-classes.git",
+  "author": "Kst <kst404@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "xxhashjs": "^0.2.1"
+  }
+}
