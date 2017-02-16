@@ -1,4 +1,4 @@
-const XXH = require('xxhashjs')
+import XXH from 'xxhashjs'
 
 const classes = []
 let styleSheet, rulesInserted = 0

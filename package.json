@@ -1,12 +1,24 @@
 {
   "name": "inline-classes",
-  "version": "0.1.1",
-  "description": "Yet another CSS-in-JS solution",
-  "main": "index.js",
+  "version": "0.1.3",
+  "description": "Yet another CSS-in-JS library",
+  "main": "lib/index.js",
   "repository": "https://github.com/kst404/inline-classes.git",
   "author": "Kst <kst404@gmail.com>",
   "license": "MIT",
   "dependencies": {
     "xxhashjs": "^0.2.1"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.23.0",
+    "babel-core": "^6.23.1",
+    "babel-preset-es2015": "^6.22.0"
+  },
+  "scripts": {
+    "build": "./node_modules/.bin/babel es6 --out-dir lib",
+    "prepublish": "npm run build"
+  },
+  "babel": {
+    "presets": ["es2015"]
   }
 }
