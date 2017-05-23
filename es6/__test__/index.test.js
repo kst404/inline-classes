@@ -35,11 +35,47 @@ describe('inline-classes', () => {
           background-color: #fff;
           margin: 0 auto;
         }
+
+        border: 1px solid #999;
       `
 
       const actual = parseStyles(testData, '._root-selector')
 
       expect(actual).toMatchSnapshot()
     })
+
+    it('generate rules for root properties, selectors and media queries', () => {
+      const testData = `
+        width: 50%;
+        height: 30vh;
+
+        p {
+          background-color: #fff;
+          margin: 0 auto;
+        }
+
+        border: 1px solid #999;
+
+        @media (max-width: 1000px) {
+          border: none;
+
+          p {
+            margin: 0;
+          }
+        }
+      `
+
+      const actual = parseStyles(testData, '._root-selector')
+
+      expect(actual).toMatchSnapshot()
+    })
+
+    // it('temp tests', () => {
+    //   const teststr = `p,
+    //   div, span
+    //   `
+    //
+    //   console.log(teststr.replace(/[\r\n\s]+/g, ' ').trim().split(','))
+    // })
   })
 })

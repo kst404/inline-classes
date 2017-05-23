@@ -4,17 +4,19 @@ const classes = []
 let styleSheet, rulesInserted = 0
 
 export function parseStyles(styles, rootSelector) {
-  let curpos = 0, currentSelector = [rootSelector], currentProps = '', result = {}
+  let curpos = 0, currentSelector = [rootSelector], currentProps = '', result = {}, mediaBraces = 0, mediaQuery = false
   const chunks = styles.split(/[;}{]/)
 
   const flushSelector = () => {
     const generatedSelector = currentSelector[currentSelector.length-1]
 
-    if(result.hasOwnProperty(generatedSelector)) {
-      result[generatedSelector] += currentProps.replace(/\s+/g, ' ').trim()
+    currentProps = currentProps.replace(/\s+/g, ' ').trim()
+
+    if(mediaQuery !== false) {
+        result[mediaQuery][generatedSelector] = (result[mediaQuery][generatedSelector] || '') + currentProps
     }
     else {
-      result[generatedSelector] = currentProps.replace(/\s+/g, ' ').trim()
+      result[generatedSelector] = (result[generatedSelector] || '') + currentProps
     }
   }
 
@@ -27,30 +29,47 @@ export function parseStyles(styles, rootSelector) {
           flushSelector()
         }
 
-        currentSelector.push(chunk.replace(/\s+/g, ' ').trim().replace(/[&]/g, currentSelector[currentSelector.length-1]))
         currentProps = ''
+
+        if(chunk.indexOf('@media') !== -1) {
+          mediaQuery = chunk.replace(/[\r\n\s]+/g, ' ').trim()
+          mediaBraces = 0
+          currentSelector = currentSelector.slice(0,1)
+          result[mediaQuery] = {}
+        }
+        else {
+          const chunkSelector = chunk.replace(/[\r\n\s]+/g, ' ').trim()
+          .split(',')
+          .map(sel => sel.trim())
+          .map(sel => sel.charAt(0) === '&' ? sel : `& ${sel}`)
+          .join(',')
+
+          currentSelector.push(chunkSelector.replace(/[&]/g, currentSelector[currentSelector.length-1]))
+
+          if(mediaQuery !== false) {
+            mediaBraces++
+          }
+        }
         break
       case '}':
         flushSelector()
 
         currentSelector.pop()
         currentProps = ''
+
+        if(mediaQuery !== false) {
+          mediaBraces--
+
+          if(mediaBraces === -1) {
+            mediaQuery = false
+          }
+        }
         break
       case ';':
         currentProps += chunk + ';'
         break
       default:
     }
-
-    // if(suffix === '{') {
-    // }
-    // else if(suffix === '}') {
-    // }
-    // else if(suffix === ';') {
-    // }
-    // else {
-    //   // TODO
-    // }
 
     curpos += chunk.length + 1
   })

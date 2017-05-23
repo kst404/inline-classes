@@ -8,13 +8,24 @@ Object {
 
 exports[`inline-classes parseStyles function generate rules for mix of simple list of properties and selectors 1`] = `
 Object {
-  "._root-selector": "width: 50%; height: 30vh;",
-  "p": "background-color: #fff; margin: 0 auto;",
+  "._root-selector": "width: 50%; height: 30vh;border: 1px solid #999;",
+  "._root-selector p": "background-color: #fff; margin: 0 auto;",
+}
+`;
+
+exports[`inline-classes parseStyles function generate rules for root properties, selectors and media queries 1`] = `
+Object {
+  "._root-selector": "width: 50%; height: 30vh;border: 1px solid #999;",
+  "._root-selector p": "background-color: #fff; margin: 0 auto;",
+  "@media (max-width: 1000px)": Object {
+    "._root-selector": "border: none;",
+    "._root-selector p": "margin: 0;",
+  },
 }
 `;
 
 exports[`inline-classes parseStyles function generate rules for selectors 1`] = `
 Object {
-  "p": "background-color: #fff; margin: 0 auto;",
+  "._root-selector p": "background-color: #fff; margin: 0 auto;",
 }
 `;
