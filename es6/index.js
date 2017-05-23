@@ -100,7 +100,19 @@ function appendRule(styleHash, styles) {
 
     for (var selector in parsedStyles) {
       if (parsedStyles.hasOwnProperty(selector)) {
-        styleSheet.insertRule(`${selector} {${parsedStyles[selector]}}`, rulesInserted)
+        if(selector.substr(0, 6) === '@media') {
+          let nestedSelectorsString = ''
+          for (var nestedSelector in parsedStyles[selector]) {
+            if (parsedStyles[selector].hasOwnProperty(nestedSelector)) {
+              nestedSelectorsString += `${nestedSelector} {${parsedStyles[selector][nestedSelector]}}`
+            }
+          }
+          styleSheet.insertRule(`${selector} {${nestedSelectorsString}}`, rulesInserted)
+          console.log(`${selector} {${nestedSelectorsString}}`)
+        }
+        else {
+          styleSheet.insertRule(`${selector} {${parsedStyles[selector]}}`, rulesInserted)
+        }
         rulesInserted++
       }
     }
@@ -108,7 +120,7 @@ function appendRule(styleHash, styles) {
   }
 }
 
-module.exports.css = function css(styles, ...values) {
+export function css(styles, ...values) {
   const interpolatedStyles = String.raw(styles, ...values.map(val => val === false || val === undefined ? '' : val))
   const styleHash = '_' + XXH.h32(interpolatedStyles.replace(/\s+/g, ' '), 0x0000 ).toString(16)
 
