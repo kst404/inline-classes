@@ -12,13 +12,18 @@
   "devDependencies": {
     "babel-cli": "^6.23.0",
     "babel-core": "^6.23.1",
-    "babel-preset-es2015": "^6.22.0"
+    "babel-jest": "^20.0.3",
+    "babel-preset-es2015": "^6.22.0",
+    "jest": "^20.0.3"
   },
   "scripts": {
-    "build": "./node_modules/.bin/babel es6 --out-dir lib",
-    "prepublish": "npm run build"
+    "build": "./node_modules/.bin/babel --ignore __test__ es6 --out-dir lib",
+    "prepublish": "npm run build",
+    "test": "jest --env=jsdom --watch"
   },
   "babel": {
-    "presets": ["es2015"]
+    "presets": [
+      "es2015"
+    ]
   }
 }

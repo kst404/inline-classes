@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`inline-classes parseStyles function generate class for simple list of properties 1`] = `
+Object {
+  "._root-selector": "background-color: #fff; margin: 0 auto;",
+}
+`;
+
+exports[`inline-classes parseStyles function generate rules for mix of simple list of properties and selectors 1`] = `
+Object {
+  "._root-selector": "width: 50%; height: 30vh;",
+  "p": "background-color: #fff; margin: 0 auto;",
+}
+`;
+
+exports[`inline-classes parseStyles function generate rules for selectors 1`] = `
+Object {
+  "p": "background-color: #fff; margin: 0 auto;",
+}
+`;

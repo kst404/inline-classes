@@ -3,7 +3,7 @@ import XXH from 'xxhashjs'
 const classes = []
 let styleSheet, rulesInserted = 0
 
-function parseStyles(styles, rootSelector) {
+export function parseStyles(styles, rootSelector) {
   let curpos = 0, currentSelector = [rootSelector], currentProps = '', result = {}
   const chunks = styles.split(/[;}{]/)
 
@@ -21,26 +21,36 @@ function parseStyles(styles, rootSelector) {
   chunks.forEach(chunk => {
     const suffix = curpos + chunk.length < styles.length ? styles.charAt(curpos + chunk.length) : ''
 
-    if(suffix === '{') {
-      if(currentProps !== '') {
+    switch (suffix) {
+      case '{':
+        if(currentProps !== '') {
+          flushSelector()
+        }
+
+        currentSelector.push(chunk.replace(/\s+/g, ' ').trim().replace(/[&]/g, currentSelector[currentSelector.length-1]))
+        currentProps = ''
+        break
+      case '}':
         flushSelector()
-      }
 
-      currentSelector.push(chunk.replace(/\s+/g, ' ').trim().replace(/[&]/g, currentSelector[currentSelector.length-1]))
-      currentProps = ''
+        currentSelector.pop()
+        currentProps = ''
+        break
+      case ';':
+        currentProps += chunk + ';'
+        break
+      default:
     }
-    else if(suffix === '}') {
-      flushSelector()
 
-      currentSelector.pop()
-      currentProps = ''
-    }
-    else if(suffix === ';') {
-      currentProps += chunk + ';'
-    }
-    else {
-      // TODO
-    }
+    // if(suffix === '{') {
+    // }
+    // else if(suffix === '}') {
+    // }
+    // else if(suffix === ';') {
+    // }
+    // else {
+    //   // TODO
+    // }
 
     curpos += chunk.length + 1
   })
