@@ -1,32 +1,20 @@
-'use strict';
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.parseStyles = parseStyles;
-exports.css = css;
-
-var _stringHash = require('string-hash');
-
-var _stringHash2 = _interopRequireDefault(_stringHash);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } } /*
-                                                                                                                                                                                                      hash functions:
-                                                                                                                                                                                                      https://github.com/darkskyapp/string-hash | 18 lines (13 sloc)  408 Bytes
-                                                                                                                                                                                                      https://github.com/srijs/rusha | 532 lines (532 sloc)  22 KB | 2 lines (2 sloc)  7.31 KB min
-                                                                                                                                                                                                      https://github.com/vigour-io/quick-hash ← murmurhash | 62 lines (52 sloc)  1.96 KB
-                                                                                                                                                                                                     */
+/*
+  hash functions:
+  https://github.com/darkskyapp/string-hash | 18 lines (13 sloc)  408 Bytes
+  https://github.com/srijs/rusha | 532 lines (532 sloc)  22 KB | 2 lines (2 sloc)  7.31 KB min
+  https://github.com/vigour-io/quick-hash ← murmurhash | 62 lines (52 sloc)  1.96 KB
+ */
 
 // import XXH from 'xxhashjs'
-
+import stringHash from 'string-hash';
 
 var classes = [];
 var styleSheet = void 0,
     rulesInserted = 0;
 
-function parseStyles(styles, rootSelector) {
+export function parseStyles(styles, rootSelector) {
   var curpos = 0,
       currentSelector = [rootSelector],
       currentProps = '',
@@ -145,7 +133,7 @@ function appendRule(styleHash, styles) {
   }
 }
 
-function css(styles) {
+export function css(styles) {
   for (var _len = arguments.length, values = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
     values[_key - 1] = arguments[_key];
   }
@@ -154,7 +142,7 @@ function css(styles) {
     return val === false || val === undefined ? '' : val;
   }))));
   // const styleHash = '_' + XXH.h32(interpolatedStyles.replace(/\s+/g, ' '), 0x0000 ).toString(16)
-  var styleHash = '_' + (0, _stringHash2.default)(interpolatedStyles.replace(/\s+/g, ' '));
+  var styleHash = '_' + stringHash(interpolatedStyles.replace(/\s+/g, ' '));
 
   appendRule(styleHash, interpolatedStyles);
 

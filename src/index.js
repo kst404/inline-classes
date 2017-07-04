@@ -1,4 +1,12 @@
-import XXH from 'xxhashjs'
+/*
+  hash functions:
+  https://github.com/darkskyapp/string-hash | 18 lines (13 sloc)  408 Bytes
+  https://github.com/srijs/rusha | 532 lines (532 sloc)  22 KB | 2 lines (2 sloc)  7.31 KB min
+  https://github.com/vigour-io/quick-hash ← murmurhash | 62 lines (52 sloc)  1.96 KB
+ */
+
+// import XXH from 'xxhashjs'
+import stringHash from 'string-hash'
 
 const classes = []
 let styleSheet, rulesInserted = 0
@@ -108,7 +116,7 @@ function appendRule(styleHash, styles) {
             }
           }
           styleSheet.insertRule(`${selector} {${nestedSelectorsString}}`, rulesInserted)
-          console.log(`${selector} {${nestedSelectorsString}}`)
+// console.log(`${selector} {${nestedSelectorsString}}`)
         }
         else {
           styleSheet.insertRule(`${selector} {${parsedStyles[selector]}}`, rulesInserted)
@@ -122,12 +130,10 @@ function appendRule(styleHash, styles) {
 
 export function css(styles, ...values) {
   const interpolatedStyles = String.raw(styles, ...values.map(val => val === false || val === undefined ? '' : val))
-  const styleHash = '_' + XXH.h32(interpolatedStyles.replace(/\s+/g, ' '), 0x0000 ).toString(16)
+  // const styleHash = '_' + XXH.h32(interpolatedStyles.replace(/\s+/g, ' '), 0x0000 ).toString(16)
+  const styleHash = '_' + stringHash(interpolatedStyles.replace(/\s+/g, ' '))
 
-  const modifiedStyles = interpolatedStyles
-
-  appendRule(styleHash, modifiedStyles)
+  appendRule(styleHash, interpolatedStyles)
 
   return styleHash
-
 }

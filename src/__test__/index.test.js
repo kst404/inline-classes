@@ -76,6 +76,28 @@ describe('inline-classes', () => {
     //   `
     //
     //   console.log(teststr.replace(/[\r\n\s]+/g, ' ').trim().split(','))
+    //
+    //   const testClassName = css`
+    //     width: 50%;
+    //     height: 30vh;
+    //
+    //     p {
+    //       background-color: #fff;
+    //       margin: 0 auto;
+    //     }
+    //
+    //     border: 1px solid #999;
+    //
+    //     @media (max-width: 1000px) {
+    //       border: none;
+    //
+    //       p {
+    //         margin: 0;
+    //       }
+    //     }
+    //   `
+    //
+    //   console.log(testClassName)
     // })
   })
 })
